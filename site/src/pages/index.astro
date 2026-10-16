@@ -1,4 +1,6 @@
 ---
+import { Picture } from 'astro:assets';
+import splash from '../assets/ButterintheSalsa.png';
 const title = 'Butter in the Salsa';
 ---
 <!doctype html>
@@ -6,27 +8,38 @@ const title = 'Butter in the Salsa';
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="Some friendships are built on questionable recipes." />
+    <meta name="description" content="Butter in the Salsa. A big debate. A small ingredient. We'll be back soon." />
     <title>{title}</title>
     <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site)} />
     <style>
-      :root { font-family: Georgia, serif; color: #fff5d5; background: #8b261b; }
+      :root { font-family: system-ui, sans-serif; color: #fff5df; background: #21140e; }
       * { box-sizing: border-box; }
-      body { margin: 0; min-height: 100svh; display: grid; place-items: center; padding: 2rem; }
-      main { max-width: 52rem; text-align: center; }
-      .eyebrow { font: 700 .8rem system-ui, sans-serif; letter-spacing: .2em; text-transform: uppercase; }
-      h1 { font-size: clamp(3.5rem, 12vw, 8rem); line-height: .95; margin: 1.5rem 0; letter-spacing: -.05em; }
-      h1 span { color: #ffdb67; }
-      .intro { font-size: clamp(1.2rem, 3vw, 1.6rem); line-height: 1.6; }
-      footer { margin-top: 4rem; font: .9rem system-ui, sans-serif; }
+      body { margin: 0; }
+      main { min-height: 100svh; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+      .artwork { width: min(100%, 1370px); }
+      .artwork :global(img) { display: block; width: 100%; height: auto; }
+      .message { text-align: center; padding: 1.25rem; max-width: 40rem; }
+      h1 { font: 700 clamp(1.5rem, 5vw, 2rem) Georgia, serif; margin: 0 0 .6rem; }
+      p { line-height: 1.6; margin: .35rem 0; }
+      @media (min-width: 48rem) {
+        .artwork { width: min(100%, 1370px, calc(100svh * 1370 / 1148)); }
+        .message { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+      }
     </style>
   </head>
   <body>
     <main>
-      <p class="eyebrow">A questionable culinary decision</p>
-      <h1>Butter in<br />the <span>Salsa.</span></h1>
-      <p class="intro">Some friendships are built on questionable recipes.<br />This one got a domain name.</p>
-      <footer>Pass the chips. We have explaining to do.</footer>
+      <div class="artwork">
+        <Picture src={splash} formats={['webp']} fallbackFormat="jpg"
+          widths={[480, 800, 1100, 1370]} sizes="(max-width: 1370px) 100vw, 1370px"
+          alt="A smiling pat of butter wearing sunglasses sits in a bowl of salsa beside tortilla chips and a handwritten butter-in-salsa ballot."
+          loading="eager" fetchpriority="high" />
+      </div>
+      <div class="message">
+        <h1>Butter in the Salsa</h1>
+        <p>A big debate. A small ingredient.</p>
+        <p>We'll be back soon.</p>
+      </div>
     </main>
   </body>
 </html>

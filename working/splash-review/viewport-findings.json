@@ -1,0 +1,143 @@
+{
+  "measurements": [
+    {
+      "font": "16px",
+      "image": {
+        "bottom": 899.984375,
+        "height": 899.984375,
+        "left": 182.984375,
+        "right": 1257.015625,
+        "top": 0,
+        "width": 1074.03125,
+        "x": 182.984375,
+        "y": 0
+      },
+      "loaded": true,
+      "messageClip": "inset(50%)",
+      "scroll": [
+        1440,
+        900
+      ],
+      "viewport": [
+        1440,
+        900
+      ]
+    },
+    {
+      "font": "16px",
+      "image": {
+        "bottom": 767.984375,
+        "height": 767.984375,
+        "left": 224.734375,
+        "right": 1141.25,
+        "top": 0,
+        "width": 916.515625,
+        "x": 224.734375,
+        "y": 0
+      },
+      "loaded": true,
+      "messageClip": "inset(50%)",
+      "scroll": [
+        1366,
+        768
+      ],
+      "viewport": [
+        1366,
+        768
+      ]
+    },
+    {
+      "font": "16px",
+      "image": {
+        "bottom": 833.765625,
+        "height": 643.546875,
+        "left": 0,
+        "right": 768,
+        "top": 190.21875,
+        "width": 768,
+        "x": 0,
+        "y": 190.21875
+      },
+      "loaded": false,
+      "messageClip": "inset(50%)",
+      "scroll": [
+        768,
+        1024
+      ],
+      "viewport": [
+        768,
+        1024
+      ]
+    },
+    {
+      "font": "16px",
+      "image": {
+        "bottom": 759.1875,
+        "height": 642.359375,
+        "left": 0,
+        "right": 767,
+        "top": 116.828125,
+        "width": 767,
+        "x": 0,
+        "y": 116.828125
+      },
+      "loaded": true,
+      "messageClip": "none",
+      "scroll": [
+        767,
+        1024
+      ],
+      "viewport": [
+        767,
+        1024
+      ]
+    },
+    {
+      "font": "16px",
+      "image": {
+        "bottom": 515.828125,
+        "height": 326.625,
+        "left": 0,
+        "right": 390,
+        "top": 189.203125,
+        "width": 390,
+        "x": 0,
+        "y": 189.203125
+      },
+      "loaded": true,
+      "messageClip": "none",
+      "scroll": [
+        390,
+        844
+      ],
+      "viewport": [
+        390,
+        844
+      ]
+    },
+    {
+      "font": "16px",
+      "image": {
+        "bottom": 348.515625,
+        "height": 268,
+        "left": 0,
+        "right": 320,
+        "top": 80.515625,
+        "width": 320,
+        "x": 0,
+        "y": 80.515625
+      },
+      "loaded": true,
+      "messageClip": "none",
+      "scroll": [
+        320,
+        568
+      ],
+      "viewport": [
+        320,
+        568
+      ]
+    }
+  ],
+  "note": "768px initial image request was in flight; subsequent visual and DOM check confirmed loaded, natural dimensions reported 768x643."
+}
