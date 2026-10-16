@@ -2,7 +2,7 @@
 title: "Publish Reviewed Splash Page"
 description: "Publish the accepted responsive artwork splash through Abbey and verify Pages and live assets."
 date: 2026-10-16
-status: pending
+status: complete
 reviewed: false
 session: publish-reviewed-splash-page
 ---
@@ -25,4 +25,14 @@ Abbey site build, site validate, site publish --dry-run and git diff --check pas
 
 ## Outcome
 
-Publication and live verification pending. Record final source revision, Actions run, HTTP/HTTPS results and asset comparisons below after deployment. No DNS, HTTPS setting or monitoring changes authorized or made.
+Published source revision: 0beeee83cf2946fff6833f7bad649d41dbc2e277 (Publish reviewed Butter in the Salsa artwork splash). Abbey site publish rebuilt, validated and pushed HEAD to origin:main after the authorized confirmation.
+
+GitHub Actions run https://github.com/brad6887/butterinthesalsa/actions/runs/38957284781 completed successfully; both build and deploy jobs succeeded for this source revision.
+
+Live verification from edge01: HTTP and HTTPS each returned 200 for the home page and all eight responsive artwork URLs (480, 800, 1100 and 1370 pixel WebP/JPEG variants). All 18 responses match the validated local build byte for byte. HTTPS used normal certificate validation, without bypasses. HTTP currently serves directly rather than redirecting to HTTPS. Certificate availability is therefore verified now; HTTPS enforcement was not changed. Full URLs and SHA-256 hashes are retained in working/splash-review/publication-verification.json.
+
+Prior desktop/mobile visual acceptance applies to the identical deployed HTML and image bytes. No new browser rendering inspection was performed during publication. No DNS, Pages HTTPS setting or monitoring changes were made.
+
+## Final Review
+
+Definition of done met. Diff checks passed. Source commit left a clean tree after publication; this final capture and verification receipt are committed separately as documentation only. The Pages workflow path filter does not redeploy documentation-only changes. Final repository revision is the commit containing this capture; deployed site revision remains 0beeee83cf2946fff6833f7bad649d41dbc2e277. Verify HEAD equals origin/main and git status is empty after pushing the capture.
