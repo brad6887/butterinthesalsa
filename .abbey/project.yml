@@ -1,0 +1,38 @@
+schema_version: 1
+project:
+  name: Butter in the Salsa
+  slug: butterinthesalsa
+  description: A website for friends who put butter in the salsa.
+framework:
+  name: Abbey
+  schema_version: 1
+configuration:
+  allow_toolkit_defaults: false
+capabilities:
+  infrastructure: false
+  internal_dns: false
+workflow:
+  journal:
+    policy: optional
+validation:
+  commands:
+  - cd site && npm run build
+  - git diff --check
+paths:
+  planning: docs/planning
+  session_updates: docs/session-updates
+  journal: content/journal
+site:
+  source: site
+  build:
+    method: npm
+    output: dist
+  validation:
+    public_root: site/public
+    media_manifests: []
+    required_routes:
+    - /
+  publish:
+    method: github-pages
+    target: origin:main
+    domain: brad6887.github.io

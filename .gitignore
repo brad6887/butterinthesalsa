@@ -1,0 +1,17 @@
+# Abbey generated working files
+working/session-context/*
+!working/session-context/.gitkeep
+
+# Generated Abbey runtime state
+.abbey/ai/
+.abbey/context/
+.abbey/knowledge/
+
+# Local Abbey configuration
+.abbey/config.conf
+
+# Astro dependencies and build output
+site/node_modules/
+site/dist/
+site/.astro/
+logs/
