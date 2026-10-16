@@ -35,4 +35,4 @@ site:
   publish:
     method: github-pages
     target: origin:main
-    domain: brad6887.github.io
+    domain: butterinthesalsa.com

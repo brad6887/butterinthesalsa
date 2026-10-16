@@ -8,6 +8,7 @@ const title = 'Butter in the Salsa';
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="Some friendships are built on questionable recipes." />
     <title>{title}</title>
+    <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site)} />
     <style>
       :root { font-family: Georgia, serif; color: #fff5d5; background: #8b261b; }
       * { box-sizing: border-box; }
