@@ -46,3 +46,24 @@ Execution and acceptance pending. Prior preparation note retained as historical 
 ## Remaining Acceptance
 
 Resolve TTL conflict; apply approved A/CNAME changes; export and compare complete final zone; query both authoritative servers and public resolvers; verify GitHub DNS/certificate readiness; enable HTTPS when available; verify apex/www HTTP and HTTPS redirects, served canonical/content and sibling availability. Stage 2 is incomplete, not merely waiting for TLS.
+
+## Resumed Cutover — 2026-10-16 14:20 CDT
+
+User explicitly approved TTL 300 to resolve the editor conflict. Re-ran Abbey session and confirmed clean working tree at f3141e0. Rechecked current provider zone before edits.
+
+- Updated apex A to 185.199.108.153 and added 185.199.109.153, 185.199.110.153, 185.199.111.153, all TTL 300. Updated www CNAME to brad6887.github.io, retaining TTL 300.
+- Complete provider export at 19:18:37 UTC compared against Stage 1 final export. Only approved A/CNAME changes and expected SOA serial advancement (2026101603 to 2026101608) occurred. Nameservers, ownership TXT, default TTL and all other SOA parameters preserved; no mail or other records existed in either complete export.
+- Both authoritative nameservers returned all four exact A values TTL 300, exact www CNAME TTL 300 and unchanged ownership TXT TTL 300. Cloudflare 1.1.1.1 and Google 8.8.8.8 independently returned the same records.
+- GitHub repository Pages reports DNS check successful, Actions source retained. Certificate not yet issued; Enforce HTTPS disabled and unchecked. Public HTTPS requests to apex and www fail hostname validation; no certificate bypass used.
+- Public apex HTTP returns 200 and matches validated site/dist/index.html byte for byte. Public www HTTP returns 301 to http://butterinthesalsa.com/ then identical content. Canonical remains https://butterinthesalsa.com/; styles inline with no external assets. Final HTTPS redirect/content acceptance remains pending.
+- BradCooke.com and BreadPitt.net final HTTPS HTML SHA-256 matches original baselines exactly. AbbeyRoot.com again timed out, consistent with pre-cutover observation; no changes made there.
+- Deployed source remains 6dfc790b393ce8e9325c1fa51ed0e4730bd6e382, successful Actions run 38953427668. Documentation-only commits do not trigger this path-filtered deployment.
+- Full final export and resolver logs retained at /home/bcooke/butterinthesalsa-stage2-20261016 and in local Work evidence directory working/evidence/2026-10-16-stage2/. Stage 1 before/after exports remain intact in local working/evidence/2026-10-16-domain-verification/.
+
+### Remaining HTTPS Acceptance
+
+Wait for GitHub certificate issuance, refresh repository Pages, enable Enforce HTTPS once available, then verify valid TLS for apex/www, HTTP-to-HTTPS redirects, www-to-apex redirect, canonical and exact content match. DNS cutover and deployment complete; overall session remains pending HTTPS acceptance. No scheduled monitoring created.
+
+### Rollback Clarification
+
+Original apex TTL 50 is retained in backup but current Hostinger editor rejects it. A rollback through that editor would require a supported TTL (minimum 60) or provider assistance to restore exactly 50. Restore original A/CNAME values only if rollback is authorized; preserve TXT and NS. Remove only this repository custom-domain assignment if reverting that setting; do not alter the user-site domain. Revert source changes with normal reviewed Git history, never force-push.
