@@ -5,7 +5,9 @@
 `.abbey/project.yml` owns build output, routes and publication target. Its domain is the Pages host; the project URL includes `/butterinthesalsa/`. Astro declares that host and base path. No CNAME is shipped during initial Pages verification.
 
 Repository: `brad6887/butterinthesalsa`. Origin: `git@github.com:brad6887/butterinthesalsa.git`.
-Initial site: https://brad6887.github.io/butterinthesalsa/
+GitHub entry URL: https://brad6887.github.io/butterinthesalsa/
+Verified HTTPS site: https://bradcooke.com/butterinthesalsa/
+The existing user-site custom domain is inherited. The GitHub entry currently redirects to HTTP; direct HTTPS works. Do not change the existing user-site settings as part of this project.
 
 Custom-domain configuration and Hostinger DNS require separate approval. When cutover is approved, align Abbey domain, Astro URL/base, Pages settings, and CNAME as applicable.
 

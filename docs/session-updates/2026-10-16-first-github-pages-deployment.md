@@ -31,12 +31,27 @@ Reviewed source and commit scope, fresh locked installation and audit, Abbey bui
 
 - edge01 GitHub SSH authentication passed as brad6887.
 - Fresh npm ci and npm audit: zero vulnerabilities.
-- Abbey build and route validation passed. Publication dry run and Abbey review passed; review warned about missing generated backlog statistics. Initial deployment result remains pending.
+- Abbey build and route validation passed. Publication dry run and Abbey review passed; review warned about missing generated backlog statistics. Initial deployment verified successfully; see acceptance evidence below.
 
 ## Next Steps
 
-Complete visibility decision, initial commit/push and live acceptance; append the exact revision, Actions run and served-content result here.
+Review this completed session. Any custom-domain cutover or inherited-domain HTTPS enforcement changes require separate authorization.
 
 ## Pages Configuration
 
 GitHub reports an inherited user-site domain, bradcooke.com, with project URL http://bradcooke.com/butterinthesalsa/. Repository cname is null. No existing user-site settings or DNS were changed. Verify the GitHub URL redirect and final HTTPS content after deployment.
+
+## Acceptance Evidence
+
+- Initial source commit: d34ee49004256d2c26d1564a4c5e8ccc45b472bc, committed and pushed from edge01 through abbey site publish.
+- Actions run: https://github.com/brad6887/butterinthesalsa/actions/runs/38938038669 — completed success, build and deploy successful.
+- https://bradcooke.com/butterinthesalsa/ returned HTTP 200 with valid TLS on 2026-10-16.
+- Served HTML SHA-256 equals the validated edge01 dist/index.html byte for byte: 3da0a5272be5ff755d1f6ccbea0a883593700be7831487d800d9968c03225529.
+- https://brad6887.github.io/butterinthesalsa/ returns 301 to http://bradcooke.com/butterinthesalsa/ because of existing user-site configuration. Direct HTTPS works; inherited HTTPS enforcement is false. Left those existing settings unchanged.
+- No Butter in the Salsa custom domain, Hostinger DNS, unrelated Abbey provisioning, or user-site configuration changed.
+- Abbey's installed publish success message incorrectly names BradCooke.com; the actual pushed repository and matching run above establish deployment scope. No shared-tooling fix included.
+- Local mirror retains its independent uncommitted Git state; edge01 is the authoritative committed publication checkout. Source and session documentation are synchronized locally.
+
+## Outcome
+
+Definition of Done achieved. Initial Pages deployment and served content verified; custom-domain cutover remains future work. Documentation-only follow-up records acceptance without triggering another Pages deployment.
