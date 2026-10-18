@@ -15,3 +15,10 @@ site/node_modules/
 site/dist/
 site/.astro/
 logs/
+
+# Poll local dependencies, private configuration and isolated databases
+site/poll-api/node_modules/
+site/poll-api/.wrangler/
+site/poll-api/.dev.vars*
+site/.env*
+!site/.env.example

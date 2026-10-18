@@ -1,5 +1,6 @@
 ---
 import { Picture } from 'astro:assets';
+import ReunionPoll from '../components/ReunionPoll.astro';
 import splash from '../assets/ButterintheSalsa.png';
 const title = 'Butter in the Salsa';
 ---
@@ -7,8 +8,16 @@ const title = 'Butter in the Salsa';
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <script is:inline id="canonical-https">
+      if (location.protocol === 'http:' && location.hostname === 'butterinthesalsa.com') {
+        const secure = new URL(location.href);
+        secure.protocol = 'https:';
+        secure.port = '';
+        location.replace(secure.href);
+      }
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="Butter in the Salsa. A big debate. A small ingredient. We'll be back soon." />
+    <meta name="description" content="Butter in the Salsa. A big debate. A small ingredient. Some things can’t be unsqueezed." />
     <title>{title}</title>
     <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site)} />
     <style>
@@ -38,8 +47,9 @@ const title = 'Butter in the Salsa';
       <div class="message">
         <h1>Butter in the Salsa</h1>
         <p>A big debate. A small ingredient.</p>
-        <p>We'll be back soon.</p>
+        <p>Some things can’t be unsqueezed.</p>
       </div>
+      <ReunionPoll />
     </main>
   </body>
 </html>

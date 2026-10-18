@@ -1,0 +1,42 @@
+{
+  "name": "butter-salsa-poll-production",
+  "main": "src/worker.js",
+  "compatibility_date": "2026-10-01",
+  "workers_dev": true,
+  "preview_urls": false,
+  "observability": {
+    "enabled": false
+  },
+  "vars": {
+    "POLL_OPEN": "false",
+    "ALLOWED_ORIGINS": "https://butterinthesalsa.com",
+    "TURNSTILE_HOSTNAMES": "butterinthesalsa.com"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "butter-salsa-production",
+      "database_id": "a6d45ef4-32d4-4d7a-a501-c2c0788fbcd3",
+      "migrations_dir": "migrations"
+    }
+  ],
+  "ratelimits": [
+    {
+      "name": "IP_LIMITER",
+      "namespace_id": "2001",
+      "simple": {
+        "limit": 5,
+        "period": 60
+      }
+    },
+    {
+      "name": "ADMISSION_LIMITER",
+      "namespace_id": "2002",
+      "simple": {
+        "limit": 60,
+        "period": 60
+      }
+    }
+  ],
+  "account_id": "66f376df57f4fb383fde1bbe8b29ffb1"
+}

@@ -1,0 +1,17 @@
+{
+  "sitekey": "0x4AAAAAAFaOigIB5KHmUF-l",
+  "modified_on": "2026-10-18T14:09:12.978801Z",
+  "created_on": "2026-10-18T14:09:12.978801Z",
+  "mode": "managed",
+  "domains": [
+    "butterinthesalsa.com"
+  ],
+  "name": "Butter in the Salsa \u2014 production",
+  "bot_fight_mode": false,
+  "region": "world",
+  "offlabel": false,
+  "ephemeral_id": false,
+  "clearance_level": "no_clearance",
+  "deployed_via": "api",
+  "last_modified_via": "api"
+}

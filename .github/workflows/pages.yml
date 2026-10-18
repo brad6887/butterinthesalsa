@@ -23,13 +23,18 @@ jobs:
         with:
           node-version: "22"
           cache: npm
-          cache-dependency-path: site/package-lock.json
+          cache-dependency-path: |
+            site/package-lock.json
+            site/poll-api/package-lock.json
       - run: npm ci
-      - run: npm run build
-      - name: Validate publication artifact
-        run: |
-          test -s dist/index.html
-          test ! -e dist/CNAME
+      - name: Install poll test dependencies
+        run: npm ci --prefix poll-api
+        env:
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: "1"
+      - name: Validate production artifact and poll tests
+        run: npm run validate:release
+        env:
+          WRANGLER_SEND_METRICS: "false"
       - uses: actions/configure-pages@v5
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
       - uses: actions/upload-pages-artifact@v4

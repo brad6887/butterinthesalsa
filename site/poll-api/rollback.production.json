@@ -1,0 +1,32 @@
+{
+  "status": "PROVISIONED_CLOSED_NO_PUBLIC_RELEASE",
+  "production_config": "wrangler.production.json",
+  "worker_name": "butter-salsa-poll-production",
+  "account_id": "66f376df57f4fb383fde1bbe8b29ffb1",
+  "database_name": "butter-salsa-production",
+  "database_id": "a6d45ef4-32d4-4d7a-a501-c2c0788fbcd3",
+  "api_url": "https://butter-salsa-poll-production.butter-salsa.workers.dev",
+  "allowed_origins": [
+    "https://butterinthesalsa.com"
+  ],
+  "turnstile_hostnames": [
+    "butterinthesalsa.com"
+  ],
+  "turnstile_site_key": "0x4AAAAAAFaOigIB5KHmUF-l",
+  "known_good_worker_version": "6d52882d-e06e-4e54-98fc-7c23c38b7f0c",
+  "known_good_frontend_commit": "NOT_RELEASED_PUBLIC_SPLASH_UNCHANGED",
+  "source_commit": "UNCOMMITTED_WORKTREE_BASE_f681148",
+  "schema_migration": "0001_poll.sql",
+  "schema_sha256": "a6ba4d3b5d708d6fa1024922c2597a2d715871a142930eb2aade66976df54f84",
+  "secret_bindings": [
+    "TURNSTILE_SECRET",
+    "VOTER_HASH_SECRET"
+  ],
+  "secret_recovery_reference": "/home/bcooke/.local/state/butter-salsa-production/worker-secrets.json on edge01; mode 0600, directory 0700; no independent off-host backup verified",
+  "close_config": "wrangler.production-close.json",
+  "close_poll_open": "false",
+  "close_workers_dev": true,
+  "backup_restore_evidence": "docs/session-updates/2026-10-18-poll-database-recovery-rehearsal.md; working/poll-recovery/report.json (synthetic local only; hosted restore unproven)",
+  "approval_reference": "Owner approved closed production provisioning and continuation preserving three preview votes on 2026-10-18",
+  "instructions": "Closed production deployment only; public frontend release and opening voting are NOT approved. No prior production version exists. Preserve D1 and HMAC. Use reviewed compatible source and wrangler.production-close.json for emergency close; never use preview resources. Remote data recovery remains separately authorized and unproven."
+}

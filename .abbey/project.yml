@@ -16,7 +16,7 @@ workflow:
     policy: optional
 validation:
   commands:
-  - cd site && npm run build
+  - cd site && npm run validate:release
   - git diff --check
 paths:
   planning: docs/planning

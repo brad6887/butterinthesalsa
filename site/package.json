@@ -8,8 +8,11 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
-    "preview": "astro preview"
+    "build": "astro build && npm run check:artifact",
+    "preview": "astro preview",
+    "check:artifact": "node scripts/check-poll-artifact.mjs",
+    "test:release": "npm --prefix poll-api test && node --test scripts/test/*.test.mjs",
+    "validate:release": "npm run build && npm run test:release"
   },
   "dependencies": {
     "astro": "7.2.8"

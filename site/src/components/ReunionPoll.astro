@@ -1,0 +1,61 @@
+---
+import productionPoll from '../../poll.production.json';
+// Production builds use reviewed public settings; local previews keep explicit env settings.
+const api = import.meta.env.PROD ? productionPoll.apiUrl : import.meta.env.PUBLIC_POLL_API_URL || '';
+const siteKey = import.meta.env.PROD ? productionPoll.siteKey : import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '';
+const choices = [
+ ['butter', 'Team Butter', 'It was genius. I’d do it again.'],
+ ['salsa', 'Team Salsa', 'Some boundaries should never be crossed.'],
+ ['absolutely-not', 'Team Absolutely Not', 'I wouldn’t even taste it.'],
+ ['whatever', 'Team Whatever', 'You’re all exhausting. Can we eat?'],
+];
+---
+<section id="reunion-poll" aria-labelledby="reunion-title" data-api={api} data-site-key={siteKey}>
+  <p class="eyebrow" id="reunion-title">THE REUNION — THE VOTE</p>
+  <p>The friendships may never recover. But the public deserves answers.</p>
+  <form>
+    <fieldset disabled>
+      <legend>Was putting butter in the salsa justified?</legend>
+      {choices.map(([id, team, quote]) => <label><input type="radio" name="position" value={id} required /><span><strong>{team}</strong><span>{quote}</span></span></label>)}
+    </fieldset>
+    <div class="challenge" aria-label="Human verification"></div>
+    <button type="submit" disabled>Make My Position Official</button>
+  </form>
+  <p class="status" role="status" aria-live="polite" aria-atomic="true">{api && siteKey ? 'Connecting to the reunion…' : 'The reunion vote is not open yet.'}</p>
+  <p class="no-js">Live voting and results require JavaScript.</p>
+  <div class="receipts" aria-labelledby="receipts-title">
+    <h2 id="receipts-title">THE RECEIPTS ARE IN</h2>
+    <p class="results-note" role="status" aria-live="polite" aria-atomic="true">Results are not loaded.</p>
+    <ul>{choices.map(([id, team]) => <li data-result={id}><span>{team}</span><span class="count">—</span><meter min="0" max="100" value="0" aria-label={`${team} share`} /></li>)}</ul>
+    <button type="button" class="refresh" disabled>Refresh results</button>
+    <p class="cadence">Results refresh every 30 seconds while this poll is visible. Counts may lag by 10 seconds.</p>
+  </div>
+  <p class="privacy">No names or email addresses. We save a random ID in your browser and a keyed hash with your ballot to discourage repeat votes. Clearing storage or using another browser can bypass this; one person, one vote is not guaranteed. Cloudflare processes verification and connection data; the poll does not store raw IP addresses. Browser storage remains until you clear it, and ballots remain until the poll owner deletes them. <a href="https://www.cloudflare.com/privacypolicy/">Cloudflare privacy policy</a>.</p>
+</section>
+<style>
+  section, section * { box-sizing:border-box; }
+  section { width:min(100%, 48rem); padding:clamp(1rem,4vw,2.5rem); margin:1rem auto 3rem; border-top:1px solid #b99a65; line-height:1.6; }
+  .eyebrow, h2 { letter-spacing:.1em; color:#f6cc78; font-size:1rem; font-weight:800; }
+  fieldset { border:0; padding:0; margin:1.5rem 0 1rem; min-width:0; }
+  legend { font:700 clamp(1.5rem,5vw,2.25rem)/1.2 Georgia,serif; margin-bottom:1.25rem; }
+  label { display:flex; align-items:center; gap:1rem; padding:1rem; margin:.65rem 0; border:1px solid #b99a65; border-radius:.4rem; cursor:pointer; }
+  label:has(input:checked) { background:#51351e; border-color:#ffd98a; }
+  input { accent-color:#f6cc78; width:1.2rem; height:1.2rem; flex-shrink:0; }
+  label span span { display:block; }
+  button { min-height:48px; padding:.75rem 1.1rem; border-radius:.35rem; border:1px solid #f6cc78; background:#f6cc78; color:#21140e; font:700 1rem system-ui,sans-serif; cursor:pointer; }
+  button:disabled { opacity:.6; cursor:default; }
+  :is(button,input,a):focus-visible { outline:3px solid #fff; outline-offset:4px; }
+  .challenge { margin-bottom:1rem; min-width:0; }
+  .status { min-height:3.2em; }
+  .receipts { border-top:1px solid #b99a65; margin-top:2rem; padding-top:1rem; }
+  ul { list-style:none; padding:0; }
+  li { display:grid; grid-template-columns:1fr auto; gap:.3rem 1rem; margin:1rem 0; }
+  meter { width:100%; height:1.1rem; grid-column:1 / -1; }
+  .refresh { background:transparent; color:#f6cc78; }
+  .privacy,.cadence { font-size:.85rem; color:#e1cfb8; }
+  a { color:#f6cc78; }
+</style>
+<script>
+  import { mountPoll } from '../scripts/reunion-poll';
+  mountPoll(document.querySelector<HTMLElement>('#reunion-poll')!);
+</script>

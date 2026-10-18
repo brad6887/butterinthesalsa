@@ -1,0 +1,32 @@
+{
+  "status": "UNPREPARED_DO_NOT_EXECUTE",
+  "production_config": "wrangler.production.json",
+  "worker_name": "butter-salsa-poll-production",
+  "account_id": "66f376df57f4fb383fde1bbe8b29ffb1",
+  "database_name": "butter-salsa-production",
+  "database_id": "REPLACE_AFTER_APPROVED_PROVISIONING",
+  "api_url": "https://butter-salsa-poll-production.butter-salsa.workers.dev",
+  "allowed_origins": [
+    "https://butterinthesalsa.com"
+  ],
+  "turnstile_hostnames": [
+    "butterinthesalsa.com"
+  ],
+  "turnstile_site_key": "REPLACE_WITH_PRODUCTION_PUBLIC_SITE_KEY",
+  "known_good_worker_version": "REPLACE_WITH_APPROVED_COMPATIBLE_PRODUCTION_VERSION",
+  "known_good_frontend_commit": "REPLACE_WITH_APPROVED_FRONTEND_COMMIT",
+  "source_commit": "REPLACE_AFTER_AUTHORIZED_COMMIT",
+  "schema_migration": "0001_poll.sql",
+  "schema_sha256": "a6ba4d3b5d708d6fa1024922c2597a2d715871a142930eb2aade66976df54f84",
+  "secret_bindings": [
+    "TURNSTILE_SECRET",
+    "VOTER_HASH_SECRET"
+  ],
+  "secret_recovery_reference": "RECORD_PRIVATE_CUSTODY_LOCATION_ONLY_NO_SECRET_VALUES",
+  "close_config": "wrangler.production-close.json",
+  "close_poll_open": "false",
+  "close_workers_dev": true,
+  "backup_restore_evidence": "docs/session-updates/2026-10-18-poll-database-recovery-rehearsal.md; working/poll-recovery/report.json (synthetic local only; hosted restore unproven)",
+  "approval_reference": "RECORD_SEPARATE_RELEASE_OR_INCIDENT_AUTHORIZATION",
+  "instructions": "Operator record only; not a Wrangler configuration. Verify all identifiers, bindings, secrets and migration compatibility. Rollback may restore open=true: close explicitly afterward. Preserve ballots and HMAC. Never use a preview version or database."
+}

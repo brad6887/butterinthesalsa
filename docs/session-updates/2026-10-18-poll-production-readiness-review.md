@@ -1,0 +1,68 @@
+---
+title: "Poll production readiness review"
+description: "Review-only findings, release gates and a ballot-preserving deployment plan."
+date: 2026-10-18
+status: pending
+reviewed: false
+session: poll-production-readiness-review
+tags:
+  - Abbey Root
+---
+
+# Butter in the Salsa production readiness review
+
+Date: 2026-10-18. Scope: review only of the uncommitted edge01 checkout at `/home/bcooke/git/butterinthesalsa`, HEAD `f681148`. No implementation changes or release approval.
+
+Objective: assess the poll implementation, operations and remaining release gates. Definition of done: concrete findings, validation evidence, human accessibility outcome or explicit pending status, and a bounded deployment/rollback plan captured through Abbey.
+
+## Decision
+
+Not ready for production admission. No critical security defect was established in the reviewed code. Hosted preview acceptance remains complete; this review did not repeat successful voting/token tests. Owner reported successful keyboard selection/navigation and 200% zoom checks, then confirmed all requested checks were checked. Screen-reader use was not explicitly identified, so screen-reader acceptance remains pending. The findings below require a small follow-up implementation/documentation session and separately authorized production preparation.
+
+## Findings and required follow-up
+
+1. **P2 — Browser storage failure leaves misleading controls and loses its explanation.** `site/src/scripts/reunion-poll.ts:17,37,40,45-51`. Observation starts before storage initialization. If storage throws, mounting returns without a widget or submit handler, but a later successful GET enables the radio fieldset. Manual refresh replaces the storage error with “Results refreshed.” Submit remains disabled. Confirmed with the actual TypeScript module and an isolated Node DOM-stub harness; no network requests or ballots. Fix: track storage eligibility in control state and preserve actionable voting status separately from results-refresh announcements. Also preserve closed/verification/recorded-vote status during manual refresh. Validate delayed GET after denied storage, repeated refresh, closed poll and successful recovery. Existing browser test checks disabled Submit only, missing this state.
+
+2. **P2 — Current runbook is contradictory and unsafe to follow as current state.** `site/poll-api/README.md:50,69-77,83-88` still says deployment/secrets or hosted acceptance are pending and counts are zero. Live inventory confirms secret bindings and two preview ballots. Fix: make one current status section link to final acceptance and this review, explicitly label historical snapshots, and replace the preview-first release checklist with a distinct production checklist. Preserve historical session evidence. No broad planning rewrite is needed.
+
+3. **Production gate — No production configuration or safe emergency-close recipe exists yet.** All real configurations target `butter-salsa-poll-preview` and the same preview D1. Default `wrangler.json` is closed but disables workers.dev and permits localhost:4321; deploying it is not a valid way to close a public production poll while keeping results available. The runbook's generic rollback paragraph does not pin configuration, version, database or endpoint. Prepare a separate production configuration, initially closed, and a reviewed close procedure that changes only POLL_OPEN while preserving the production URL, origins, DB, secrets and limiter bindings. A rollback restores a Worker version's bindings/settings as well as code: verify the target version explicitly. Do not roll back to preview or local configurations. Production resources do not exist in the current D1 inventory; separation is a prerequisite, not an accomplished claim.
+
+4. **Release gate — Human keyboard, zoom/mobile and screen-reader acceptance remains pending.** Prior synthetic browser checks report zero axe violations at four widths and exercise arrow keys, but they do not establish human acceptance or the real verification frame's usability. The user initially could not open localhost:4322. Edge01 returned 200 with original PID 332757; the Mac had no port-4322 listener. After the user's tunnel troubleshooting, restored only local SSH forwarding; Mac HTTP now returns 200. No preview restart or ballot. Owner checklist: Tab/Shift-Tab across poll, arrow-key selection, visible focus, entry/exit from real verification, refresh and privacy link, 200% zoom/reflow, mobile controls, and screen-reader question/labels/status/results. Report exact checks and issues; no additional vote is needed. Unsupported/unperformed checks remain pending.
+
+## Security, privacy and maintainability assessment
+
+- Worker uses parameterized SQL, four fixed choices, bounded streamed JSON, server-only HMAC and real Siteverify with exact hostname/action validation and timeout. Unique ballot key plus insert trigger gives atomic counting; duplicate recovery is deliberate and skips consuming another challenge for an existing identity. No public administration route or mutable ballot operation.
+- Voting requires POLL_OPEN exactly `true` and required secrets/limiters; default Worker is closed and URL-disabled. Default Astro build has empty `data-api` and `data-site-key`, leaving voting inactive. Pages workflow has no public poll build settings. Existing localhost preview explicitly targets the hosted preview API and localhost site key.
+- `.dev.vars` and `.env.hosted-preview.local` are ignored and mode 0600. Read-only secret inventory shows TURNSTILE_SECRET and VOTER_HASH_SECRET names only; secret values were not printed or copied. Production needs newly generated, separate secrets and private recovery custody. Preserve the HMAC across releases; rotation changes duplicate identity.
+- Notice accurately describes random browser identity, keyed ballot hash, storage bypass limits, Cloudflare processing, no raw IP in poll D1 and indefinite owner-managed deletion. This is pseudonymous best-effort voting, with no person-level identity guarantee. Owner must choose closure/deletion and backup retention before release; no automatic deletion is implemented. Provider processing and account security remain separate from D1 storage claims.
+- CORS is not authentication. Hosted preview is publicly reachable, with exact localhost origin filtering. It must not be described as private without separate access control. No access control was added during this review.
+- Five-per-IP and sixty-per-location admission controls are approximate; shared NATs can affect legitimate voters. GET polling has no explicit admission limit. Review aggregate usage/availability after launch without body, token, raw-IP or voter-hash logging. Avoid adding identity infrastructure or a global quota absent a demonstrated need.
+- Framework-free frontend and dependency-free Worker runtime fit this small poll. Dense one-line state/validation code makes review harder; improve readability when making the bounded state fix, without a framework rewrite.
+- Nonblocking test-helper weakness: `hosted-negative*.mjs` records pass flags without failing the process on mismatches; `hosted-smoke.mjs` does not require its rate loop to see 429. Several helpers duplicate the same preview operations and overwrite historical evidence names. Consolidate before reuse as a release gate and use unique output paths. Do not rerun the token harness casually: it writes a preview ballot. None of these helpers ran in this review.
+
+## Validation and observed state
+
+- Fresh validation: seven API/runtime test groups pass (isolated local D1), Worker bundle dry run passes, Abbey site build/validate/publish dry run pass, tracked diff whitespace passes. No backend/frontend code edits. Existing final acceptance audit JSON reports zero vulnerabilities; audits were not rerun in this review.
+- Read-only preview D1: Butter 1, Whatever 1, Salsa 0, Absolutely Not 0; grouped ballot counts match. Queries report zero writes. D1 inventory contains only `butter-salsa-preview`; provider's storage label “production” does not identify an application production environment.
+- Read-only preview deployment inventory still ends at version `3f2da025-703c-4b45-bbc9-a048f2dea6ff`. No review deployment.
+- HTTP and HTTPS each independently return 200 at butterinthesalsa.com, with unchanged splash SHA256 `55fef72d32f1265fa1e9d2fdca99a82396183f1f90d23cca6fe8100f595e5a00`. HTTP remains direct HTTP; no redirect/DNS/HTTPS settings changed.
+- Complete tracked diff and untracked implementation inventory reviewed: Astro integration/component/script; Worker/shared constants; migration; four Wrangler configs/public widget metadata; npm manifests/lock; all test helpers; runbook; both existing session captures and recovered hosted evidence. Prior screenshots/axe findings remain prior automated evidence; no new human visual acceptance is inferred.
+- Existing dirty files preserved. Only new review evidence/session capture added. Fresh logs on edge01: `working/poll-readiness/{api-tests,worker-dry-run,abbey-build,abbey-validate,abbey-dry-run}.log`, plus before/after Git status/diff.
+
+## Bounded deployment plan — proposed, not authorized
+
+1. Follow-up local work: fix finding 1, reconcile runbook current state, prepare explicit production/close configurations and meaningful state regression checks; rerun the seven groups and relevant frontend checks. Finish owner accessibility acceptance on real localhost preview. Record any remaining human checks honestly.
+2. Owner approves a concrete production configuration and provisioning scope separately. Pin account, distinct Worker name, distinct D1 ID/name, distinct Turnstile widget and fresh secrets; default POLL_OPEN=false. For the current canonical site, origin is `https://butterinthesalsa.com` and widget hostname is `butterinthesalsa.com`. Include `www` or any other origin only after verifying it is an intended serving origin; origins never include a path. Do not allow localhost or the preview site key in production. Do not alter DNS; use a separately named workers.dev endpoint. Freeze exact values before executing commands.
+3. Under that approval only: provision production resources, upload secrets privately, apply migration through tracking using the explicit production config, verify zero ballots/counters, and deploy closed. Verify GET shows open=false and POST is rejected. Confirm preview still holds its two votes. No test ballot may contaminate production; any production write smoke requires an explicit owner-approved ballot/accounting plan.
+4. Rehearse closure and recovery against isolated disposable/local data first. Export the approved database privately before future schema changes and restore to a new database, checking all four totals against grouped ballots and verifying trigger/constraint behavior. Do not treat a successful export alone as recovery evidence. Do not delete/reinitialize live data, replay 0001 manually or restore over production as part of a code rollback.
+5. Separate publication approval: review final diff/status, commit only with permission, add only the public production API URL/site key to the Pages build, validate the generated artifact, and authorize push/publication. Keep Worker server secrets out of frontend settings and logs. Push to main automatically starts Pages; it is a publication action. Coordinate opening production voting separately and verify the exact deployed configuration.
+6. Release verification: wait for build and deploy success, compare served HTTP/HTTPS assets independently with the approved build, check configured API/widget targets, CORS, readable results and absence of preview/test settings. Observe errors, request/D1 usage and aggregates. Record owner acceptance and limits.
+7. Incident response: close using the reviewed production config while keeping results URL available; verify POST rejection and unchanged ballots/counters. For code rollback, use the recorded compatible production version and verify DB/secret/origin/open settings before activation; keep voting closed afterward. If withdrawing frontend, redeploy a reviewed splash artifact through the separately approved Pages path. Keep production D1, ballots, migration history, HMAC and private backups intact. Document the incident and obtain separate authorization for any restore, schema repair, deletion or reopening.
+
+Provider sources checked during review: [Turnstile validation](https://developers.cloudflare.com/turnstile/get-started/server-side-validation/), [rate-limit locality/accuracy](https://developers.cloudflare.com/workers/runtime-apis/bindings/rate-limit/), [Worker versions](https://developers.cloudflare.com/workers/versions-and-deployments/), [rollback constraints](https://developers.cloudflare.com/workers/versions-and-deployments/rollbacks/), [D1 export/import](https://developers.cloudflare.com/d1/best-practices/import-export-data/).
+
+No commits, pushes, production provisioning, public publication or DNS changes occurred. Review findings are not release approval.
+
+## Owner accessibility follow-up
+
+The owner reported keyboard selection using Tab and arrows, navigation at 200% zoom, and that all requested checks were checked. Record keyboard navigation, arrow-key selection, focus/verification-area exit, refresh/privacy-link navigation and 200% zoom usability as owner-reported passes with no issues reported. This is human evidence, separate from automated checks. No additional ballot submission was reported. VoiceOver/screen-reader use and a separate mobile-device check were not explicitly confirmed and remain pending. Finding 4 is partially resolved; implementation and operational findings remain open.
